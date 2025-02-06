@@ -1,0 +1,32 @@
+<template>
+    <lightning-card title="Steps Data">
+
+        <!-- Button on the right side -->
+        <div class="slds-grid slds-grid_align-spread slds-m-bottom_small">
+            <div></div> 
+            <!-- Empty div to push button to the right -->
+            <lightning-button-icon 
+                icon-name="utility:refresh"
+                alternative-text="Refresh"
+                variant="border-filled"
+                size="medium"
+                onclick={handleRefresh}
+                class="refresh-button">
+            </lightning-button-icon>
+        </div>
+        <!-- Table -->
+        <template if:true={stepsData}>
+            <lightning-datatable 
+                key-field="Id"
+                data={stepsData}
+                columns={columns}
+                hide-checkbox-column="true">
+            </lightning-datatable>
+        </template>
+
+        <!-- Chart -->
+        <template if:true={chartConfig}>
+            <canvas class="chart" lwc:dom="manual"></canvas>
+        </template>
+    </lightning-card>
+</template>

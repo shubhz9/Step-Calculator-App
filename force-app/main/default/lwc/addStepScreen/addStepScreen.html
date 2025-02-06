@@ -1,0 +1,21 @@
+<!-- addStepScreen.html -->
+<template>
+    <lightning-card title="Enter Today's Steps">
+        <div>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+            </template>
+            <lightning-combobox 
+                label="Select Participant"
+                value={selectedContact}
+                placeholder="Choose Participant"
+                options={contactOptions}
+                onchange={handleContactChange}
+                required>
+            </lightning-combobox>
+            <lightning-input type="number" label="Today's Steps" onchange={handleInputChangeTodaysSteps} required></lightning-input>
+            <lightning-input type="number" label="Golden Point" onchange={handleInputChangeGoldenPoint}></lightning-input>
+            <lightning-button label="Save Steps" variant="brand" onclick={handleSave}></lightning-button>
+        </div>
+    </lightning-card>
+</template>
