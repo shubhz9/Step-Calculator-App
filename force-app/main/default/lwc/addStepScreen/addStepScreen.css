@@ -1,0 +1,38 @@
+/* Style for the card container */
+lightning-card {
+    --slds-c-card-color-background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+/* General styling for form elements */
+lightning-combobox,
+lightning-input {
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* Spacing for the checkbox */
+lightning-input[type="checkbox"] {
+    margin-top: 10px;
+}
+
+/* Centering the save button */
+lightning-button {
+    display: block;
+    margin: 20px auto 0;
+    font-weight: bold;
+}
+
+/* Adding hover effect to the button */
+lightning-button:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+}
+
+/* Loading spinner alignment */
+lightning-spinner {
+    display: flex;
+    justify-content: center;
+}
