@@ -3,12 +3,15 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import doGetStepCompetitionContacts from '@salesforce/apex/Contact_CON.getStepCompetitionContacts'
 import doUpsertSteps from '@salesforce/apex/Steps_CON.upsertSteps'
+import dogetCompetitions from '@salesforce/apex/Competition_CON.getCompetitions'
 
 export default class AddStepScreen extends LightningElement {
     steps = '';
-    goldenPoint = '';
+    goldenPoint = false;
     selectedContact = '';
     contactOptions = [];
+    selectedCompetition = '';
+    competitionOptions = [];
     isLoading = false;
 
     @wire(doGetStepCompetitionContacts)
@@ -19,6 +22,24 @@ export default class AddStepScreen extends LightningElement {
                 label: contact.Name,
                 value: contact.Id
             }));
+        }
+        if(error){
+            console.log('@@-- error - ', error);
+            this.dispatchEvent( new ShowToastEvent({
+                title: "Error",
+                message: error.message,
+                variant: "error"
+            }))
+        }
+    }
+
+    @wire(dogetCompetitions)
+    getCompetitions({data, error}){
+        if(data){
+            this.competitionOptions = data.map(competition => ({
+                label: competition.Competition_Name__c,
+                value: competition.Id
+            }))
         }
         if(error){
             console.log('@@-- error - ', error);
@@ -42,6 +63,10 @@ export default class AddStepScreen extends LightningElement {
         this.selectedContact = event.target.value;
     }
 
+    handleCompetitionChange(event){
+        this.selectedCompetition = event.target.value;
+    }
+
     async handleSave() {
         this.isLoading = true;
         const payload = this.getPayload();
@@ -55,6 +80,7 @@ export default class AddStepScreen extends LightningElement {
                 mode: 'Sticky'
             });
             this.dispatchEvent(evt);
+            this.clearValues();
             this.isLoading = false;
         }else{
             const evt = new ShowToastEvent({
@@ -70,9 +96,26 @@ export default class AddStepScreen extends LightningElement {
 
     getPayload(){
         return {
+            competition: this.selectedCompetition,
             contact: this.selectedContact,
             todaysSteps: this.steps,
-            goldenPoint: (this.goldenPoint && this.goldenPoint.length ? this.goldenPoint : 0) 
+            goldenPoint: this.goldenPoint ? 1 : 0
         }
+    }
+
+    clearValues(){
+        this.selectedCompetition = '';
+        this.selectedContact = '';
+        this.steps = '';
+        this.goldenPoint = false;
+    }
+
+    get cannotSaveRecord(){
+        return !this.selectedCompetition ||
+        !this.selectedContact ||
+        !this.steps ||
+        !this.selectedCompetition.length ||
+        !this.selectedContact.length ||
+        !this.steps.length;
     }
 }

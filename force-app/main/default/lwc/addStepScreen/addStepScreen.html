@@ -13,9 +13,18 @@
                 onchange={handleContactChange}
                 required>
             </lightning-combobox>
-            <lightning-input type="number" label="Today's Steps" onchange={handleInputChangeTodaysSteps} required></lightning-input>
-            <lightning-input type="number" label="Golden Point" onchange={handleInputChangeGoldenPoint}></lightning-input>
-            <lightning-button label="Save Steps" variant="brand" onclick={handleSave}></lightning-button>
+
+            <lightning-combobox 
+                label="Select Competition"
+                value={selectedCompetition}
+                placeholder="Choose Competition"
+                options={competitionOptions}
+                onchange={handleCompetitionChange}
+                required>
+            </lightning-combobox>
+            <lightning-input type="number" label="Today's Steps" onchange={handleInputChangeTodaysSteps} value={steps} required></lightning-input>
+            <lightning-input type="checkbox" label="Golden Point" onchange={handleInputChangeGoldenPoint} checked={goldenPoint}></lightning-input>
+            <lightning-button label="Save Steps" variant="brand" onclick={handleSave} if:false={cannotSaveRecord} disabled={cannotSaveRecord}></lightning-button>
         </div>
     </lightning-card>
 </template>
